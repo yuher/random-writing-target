@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				text-align: center;
+				font-family: "Microsoft JhengHei";
+			}
+			button {
+				background-color: #e7e7e7; 
+				color: black;
+				border: none;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				font-size: 16px;
+				margin: 4px 10px;
+				border-radius: 12px;
+				outline:none;
+				font-weight:bold;
+			}
+			p {
+				font-size: 30px;
+				font-weight: bold;
+			}
+			.result {
+				border-style: solid;
+  			border-width: 0px 0px 4px 0px;
+				width: 200px;
+				text-align: center;
+				margin: auto;
+				margin-top: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<p>今日寫作目標</p>
+
+		<button onclick="randomFunction()">GO</button>
+
+		<p class="result" id="result">?</p>
+
+		<script>
+		function randomFunction() {
+
+			var target = {"50-150":0.2, "151-250":0.3, "251-350":0.3, "351-450":0.12, "修舊稿":0.05, "休息":0.03};
+
+			function weightedRand(spec) {
+				var i, sum=0, r=Math.random();
+				for (i in spec) {
+					sum += spec[i];
+					if (r <= sum) return i;
+				}
+			}
+			function wordRand(a, b) {
+				return a + Math.floor(Math.random() * (b-a+1));
+			}
+
+			var result = weightedRand(target);
+			var num = result.split("-");
+
+			if( num.length>1 ) {
+				result = wordRand(parseInt(num[0]),parseInt(num[1])) + " 字";
+			}
+
+			document.getElementById("result").innerHTML = result;
+		}
+		</script>
+	</body>
+</html>
