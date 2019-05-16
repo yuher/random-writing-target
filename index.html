@@ -32,6 +32,38 @@
 				margin: auto;
 				margin-top: 30px;
 			}
+			.probability {
+				border-style: solid;
+				border-width: 0px 0px 4px 0px;
+				width: 400px;
+				margin: auto;
+				color: #cccccc;
+				margin-top: 5px;
+				visibility: hidden;
+			}
+			.probability > input {
+				border: none;
+				font-size: 25px;
+				width: 100%;
+				color: #cccccc;
+				outline:none;
+				letter-spacing: 1.5px;
+			}
+			.setting {
+				margin-top: 20px;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				border: none;
+				padding: 0px;
+				opacity:0;
+			}
+			.setting.show{
+				opacity:1;
+			}
+			.setting:hover {
+				opacity:1;
+			}
 		</style>
 	</head>
 	<body>
@@ -41,31 +73,49 @@
 
 		<p class="result" id="result">?</p>
 
-		<script>
-		function randomFunction() {
+		<button class="setting" onclick="settingFunction()"></button>
 
+		<div class="probability">
+			<input type="text" value='{"50-150":0.2, "151-250":0.3, "251-350":0.3, "351-450":0.12, "修舊稿":0.05, "休息":0.03}'>
+		</div>
+
+		<script>
 			var target = {"50-150":0.2, "151-250":0.3, "251-350":0.3, "351-450":0.12, "修舊稿":0.05, "休息":0.03};
 
-			function weightedRand(spec) {
-				var i, sum=0, r=Math.random();
-				for (i in spec) {
-					sum += spec[i];
-					if (r <= sum) return i;
+			function randomFunction() {
+				function weightedRand(spec) {
+					var i, sum=0, r=Math.random();
+					for (i in spec) {
+						sum += spec[i];
+						if (r <= sum) return i;
+					}
+				}
+				function wordRand(a, b) {
+					return a + Math.floor(Math.random() * (b-a+1));
+				}
+				var result = weightedRand(target);
+				var num = result.split("-");
+
+				if( num.length>1 ) {
+					result = wordRand(parseInt(num[0]),parseInt(num[1])) + " 字";
+				}
+
+				document.getElementById("result").innerHTML = result;
+			}
+			
+			function settingFunction() {
+				var isHidden = (getComputedStyle(document.querySelector(".probability")).visibility=='hidden');
+				if( isHidden ) {
+					document.querySelector(".setting").classList.add("show");
+					document.querySelector(".setting").innerHTML = 'OK';
+					document.querySelector(".probability").style.visibility = 'visible';
+				} else {
+					target = JSON.parse(document.querySelector(".probability > input").value);
+					document.querySelector(".setting").classList.remove("show");
+					document.querySelector(".setting").innerHTML = '';
+					document.querySelector(".probability").style.visibility = 'hidden';
 				}
 			}
-			function wordRand(a, b) {
-				return a + Math.floor(Math.random() * (b-a+1));
-			}
-
-			var result = weightedRand(target);
-			var num = result.split("-");
-
-			if( num.length>1 ) {
-				result = wordRand(parseInt(num[0]),parseInt(num[1])) + " 字";
-			}
-
-			document.getElementById("result").innerHTML = result;
-		}
 		</script>
 	</body>
 </html>
