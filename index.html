@@ -41,16 +41,12 @@
 				color: #cccccc;
 				margin-top: 5px;
 				visibility: hidden;
+				text-align: center;
 			}
-			@media only screen and (max-width:40em) {
-				.probability {
-					width: 100%;
-				}
-			}
-			.probability > input {
+			.probability > textarea {
 				border: none;
 				font-size: 25px;
-				width: 100%;
+				width: 80%;
 				color: #cccccc;
 				outline:none;
 				letter-spacing: 1.5px;
@@ -72,6 +68,15 @@
 					opacity:1;
 				}
 			}
+			@media only screen and (max-width:40em) {
+				.probability {
+					width: 95%;
+				}
+				.probability > textarea {
+					width: 90%;
+					font-size: 20px;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -84,7 +89,7 @@
 		<button class="setting" onclick="settingFunction()"></button>
 
 		<div class="probability">
-			<input type="text" value='{"50-150":0.2, "151-250":0.3, "251-350":0.3, "351-450":0.12, "修舊稿":0.05, "休息":0.03}'>
+			<textarea rows="9"></textarea>
 		</div>
 
 		<script>
@@ -117,8 +122,9 @@
 					document.querySelector(".setting").classList.add("show");
 					document.querySelector(".setting").innerHTML = 'OK';
 					document.querySelector(".probability").style.visibility = 'visible';
+					document.querySelector(".probability > textarea").value = JSON.stringify(target, null, 2);
 				} else {
-					target = JSON.parse(document.querySelector(".probability > input").value);
+					target = JSON.parse(document.querySelector(".probability > textarea").value);
 					document.querySelector(".setting").classList.remove("show");
 					document.querySelector(".setting").innerHTML = '';
 					document.querySelector(".probability").style.visibility = 'hidden';
